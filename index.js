@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import inquirer from "inquirer";
 import { generate } from "./commands/generate.js";
 
@@ -16,7 +17,7 @@ const main = async () => {
     ]);
 
     switch (action) {
-      case "Add a new resource":
+      case "Add new resources":
         generate();
         break;
       case "Exit":

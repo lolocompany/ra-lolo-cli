@@ -3,19 +3,21 @@
     "version": "0.1.0",
     "description": "CLI tool to build react-admin components based on json-schema",
     "main": "index.js",
+    "bin": {
+        "ra-lolo": "./index.js"
+    },
     "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "Lolo",
     "license": "ISC",
     "type": "module",
     "dependencies": {
-      "change-case": "^5.4.4",
-      "commander": "^12.1.0",
-      "handlebars": "^4.7.8",
-      "inquirer": "^12.1.0",
-      "jscodeshift": "^17.1.1",
-      "react-admin": "^5.3.4"
+        "change-case": "^5.4.4",
+        "commander": "^12.1.0",
+        "handlebars": "^4.7.8",
+        "inquirer": "^12.1.0",
+        "jscodeshift": "^17.1.1",
+        "react-admin": "^5.3.4"
     }
-  }
-  
+}
