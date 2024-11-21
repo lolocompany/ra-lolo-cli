@@ -1,6 +1,6 @@
-import React from 'react';
+import { ListProps, FilterProps } from 'react-admin'
 
-const {{resourceName}}Filter = (props) => (
+const {{resourceName}}Filter: React.FC<FilterProps>  = (props) => (
   <Filter {...props}>
     {{#each components.filterView}}
       {{{this}}}
@@ -8,7 +8,7 @@ const {{resourceName}}Filter = (props) => (
   </Filter>
 );
 
-const {{resourceName}}List = (props) => (
+const {{resourceName}}List: React.FC<ListProps> = (props) => (
 <List filters={<{{resourceName}}Filter />} {...props}>
   <Datagrid>
     {{#each components.listView}}

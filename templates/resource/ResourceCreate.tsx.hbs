@@ -1,6 +1,6 @@
-import React from 'react';
+import { CreateProps } from 'react-admin'
 
-const {{resourceName}}Create = (props) => (
+const {{resourceName}}Create: React.FC<CreateProps>  = (props) => (
   <Create {...props}>
     <SimpleForm>
     {{#each components.createView}}

@@ -1,6 +1,6 @@
-import React from 'react';
+import { ShowProps } from 'react-admin'
 
-const {{resourceName}}Show = (props) => (
+const {{resourceName}}Show: React.FC<ShowProps>  = (props) => (
 <Show {...props}>
   <SimpleShowLayout>
     {{#each components.showView}}
