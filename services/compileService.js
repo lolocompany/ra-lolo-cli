@@ -10,7 +10,7 @@ import handlebars from "handlebars";
 import { pascalCase } from "change-case";
 import { fixImports } from "../transformers/fixImport.js";
 
-export function generateFiles(resourceName, components, projectPath = "./output") {
+export function generateFiles(resourceName, components, projectPath = "./") {
   const resourceNamePascalCase = pascalCase(resourceName);
   const templateDir = "./templates/resource";
   const outputDir = projectPath;
