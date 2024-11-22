@@ -1,8 +1,12 @@
-import jscodeshift from "jscodeshift";
+import { pascalCase } from "change-case";
 import fs from "fs";
 import Handlebars from "handlebars";
+import jscodeshift from "jscodeshift";
 import path from "path";
-import { pascalCase } from "change-case";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export function addResource(filePath, resourceName, importPath) {
   const source = fs.readFileSync(filePath, "utf-8");
@@ -46,7 +50,8 @@ export function addResource(filePath, resourceName, importPath) {
 
     if (adminNode.size() > 0) {
       const templatePath = path.resolve(
-        "./templates/resourceComponent.jsx.hbs"
+        __dirname,
+        "../templates/resourceComponent.jsx.hbs"
       );
       const templateContent = fs.readFileSync(templatePath, "utf-8");
       Handlebars.registerHelper("openBrace", function () {

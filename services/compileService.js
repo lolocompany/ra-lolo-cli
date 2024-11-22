@@ -1,18 +1,24 @@
-import { 
-  readdirSync, 
-  readFileSync, 
-  writeFileSync, 
-  existsSync, 
-  mkdirSync 
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
 } from "fs";
-import { join, basename } from "path";
-import handlebars from "handlebars";
-import { pascalCase } from "change-case";
-import { fixImports } from "../transformers/fixImport.js";
+import path, { basename, join } from "path";
+import { fileURLToPath } from "url";
 
-export function generateFiles(resourceName, components, projectPath = "./") {
+import { pascalCase } from "change-case";
+import handlebars from "handlebars";
+import { fixImports } from "../transformers/fixImport.js";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+console.log(__dirname);
+
+export function generateFiles(resourceName, components, projectPath) {
   const resourceNamePascalCase = pascalCase(resourceName);
-  const templateDir = "./templates/resource";
+
+  const templateDir = path.resolve(__dirname, "../templates/resource");
   const outputDir = projectPath;
   const resourceDir = join(outputDir, `${resourceName}s`);
 

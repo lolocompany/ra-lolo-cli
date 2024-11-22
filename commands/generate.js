@@ -8,7 +8,7 @@ export const generate = async () => {
   try {
     const resourcesRaw = await resourcePrompt();
     const resources = resourcesRaw.split(",").map((res) => res.trim());
-    const projectPath = './'
+    const projectPath = ".";
 
     for (const resource of resources) {
       const schema = await getSchema(resource);
