@@ -1,3 +1,5 @@
+[![npm version](https://img.shields.io/npm/v/@lolocompany/ra-lolo-cli)](https://www.npmjs.com/package/@lolocompany/ra-lolo-cli)
+
 # ra-lolo-cli
 
 `ra-lolo-cli` is a command-line tool for generating React-Admin resources dynamically based on JSON schemas. It simplifies the creation of components and views for React-Admin projects by automating the resource generation process.
