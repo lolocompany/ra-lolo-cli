@@ -1,3 +1,8 @@
-import fs from "fs";
+import dotenv from "dotenv";
 
-export const config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
+dotenv.config();
+console.log(process.env.LO_API_KEY)
+export const config = {
+  apiKey: process.env.LO_API_KEY,
+  baseUrl: process.env.LO_API
+};

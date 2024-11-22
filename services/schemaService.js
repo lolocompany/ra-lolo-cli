@@ -4,7 +4,7 @@ import { apiClient } from "../api/apiClient.js";
 import { config } from "../utils/config.js";
 
 export const getSchema = async (resource) => {
-  const url = `${config.BASE_URL}/schemas/${resource}`;
+  const url = `${config.baseUrl}/schemas/${resource}`;
   return await apiClient(url);
 };
 export const getProperties = (schema, parentKey = "") => {

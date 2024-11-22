@@ -10,7 +10,7 @@ const main = async () => {
         name: "action",
         message: "What would you like to do?",
         choices: [
-          "Add a new resource",
+          "Add new resources",
           "Exit",
         ],
       },
