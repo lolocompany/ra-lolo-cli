@@ -16,6 +16,17 @@ export const getProperties = (schema, parentKey = "") => {
     filter: [],
   };
 
+  // Validate schema and schema.properties
+  if (
+    !schema || 
+    typeof schema !== "object" || 
+    !schema.properties || 
+    typeof schema.properties !== "object"
+  ) {
+    console.warn("Invalid schema or schema.properties is not an object.");
+    return views; // Return empty views if invalid
+  }
+
   Object.keys(schema.properties).forEach((key) => {
     const property = schema.properties[key];
     const fieldName = parentKey ? `${parentKey}.${key}` : key;

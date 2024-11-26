@@ -1,25 +1,45 @@
 export const generateFields = (properties, disableChoices = false) => {
+  if (!Array.isArray(properties)) {
+    throw new Error("Invalid properties: must be an array.");
+  }
+
   return properties.map((field) => {
+    if (!field || !field.component || !field.value) {
+      console.warn("Invalid field definition:", field);
+      return null;
+    }
+
     // Handle NestedObjectSection
     if (field.component === "NestedObjectSection") {
+      if (!Array.isArray(field.properties)) {
+        console.warn("Invalid NestedObjectSection properties:", field);
+        return null;
+      }
       const nestedFields = field.properties
         .map(
           (nestedField) =>
-            `<${nestedField.component} source="${nestedField.value}" />`
+            nestedField.component && nestedField.value
+              ? `<${nestedField.component} source="${nestedField.value}" />`
+              : null
         )
+        .filter(Boolean)
         .join("\n");
       return `<> 
-        <h3>${field.name}</h3>
+        <h3>${field.name || "Section"}</h3>
         ${nestedFields}
       </>`;
     }
 
     // Handle ArrayObjectSimpleFormIterator
     if (field.component === "ArrayObjectSimpleFormIterator") {
+      if (!Array.isArray(field.items)) {
+        console.warn("Invalid items for ArrayObjectSimpleFormIterator:", field);
+        return null;
+      }
       return `<> 
         <ArrayInput source="${field.value}">
           <SimpleFormIterator>
-            ${generateFields(field.items).join("\n")}
+            ${generateFields(field.items, disableChoices).join("\n")}
           </SimpleFormIterator>
         </ArrayInput>
       </>`;
@@ -39,12 +59,16 @@ export const generateFields = (properties, disableChoices = false) => {
       return `<ReferenceInput source="${
         field.value
       }" reference="${field.value.replace(/Id$/, "s")}">
-          <AutocompleteInput source="devices" optionText="name" />
+          <AutocompleteInput optionText="name" />
       </ReferenceInput>`;
     }
 
     // Handle CheckboxGroupInput for createView
     if (field.component === "CheckboxGroupInput") {
+      if (!disableChoices && !Array.isArray(field.choices)) {
+        console.warn("Invalid choices for CheckboxGroupInput:", field);
+        return null;
+      }
       return `<CheckboxGroupInput source="${field.value}"${
         !disableChoices ? ` choices={${JSON.stringify(field.choices)}}` : ""
       } />`;
@@ -61,5 +85,5 @@ export const generateFields = (properties, disableChoices = false) => {
         ? ` choices={${JSON.stringify(field.choices)}}`
         : ""
     } />`;
-  });
+  }).filter(Boolean); // Remove null/invalid fields from the result
 };
