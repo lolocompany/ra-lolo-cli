@@ -13,7 +13,6 @@ import handlebars from "handlebars";
 import { fixImports } from "../transformers/fixImport.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-console.log(__dirname);
 
 export function generateFiles(resourceName, components, projectPath) {
   const resourceNamePascalCase = pascalCase(resourceName);
