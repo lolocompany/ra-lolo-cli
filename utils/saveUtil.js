@@ -16,6 +16,6 @@ export const createViewComponents = (schema) => {
 };
 
 export const saveGeneratedResource = (resource, views, projectPath) => {
-  generateFiles(resource, views, `${projectPath}/src/`);
+  generateFiles(resource, views, `${projectPath}/src/resources`);
   addResource(`${projectPath}/src/App.tsx`, resource);
 };

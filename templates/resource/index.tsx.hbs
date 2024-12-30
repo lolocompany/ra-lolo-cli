@@ -1,4 +1,13 @@
-export { default as {{resourceName}}List } from './{{resourceName}}List';
-export { default as {{resourceName}}Edit } from './{{resourceName}}Edit';
-export { default as {{resourceName}}Create } from './{{resourceName}}Create';
-export { default as {{resourceName}}Show } from './{{resourceName}}Show';
+import { ResourceProps } from "react-admin";
+import {{resourceName}}Create from "./{{resourceName}}Create";
+import {{resourceName}}Edit from "./{{resourceName}}Edit";
+import {{resourceName}}List from "./{{resourceName}}List";
+import {{resourceName}}Show from "./{{resourceName}}Show";
+
+export const {{resourceNameCamelCase}}Resource: ResourceProps = {
+  name: "{{resourceName}}",
+  list: {{resourceName}}List,
+  create: {{resourceName}}Create,
+  edit: {{resourceName}}Edit,
+  show: {{resourceName}}Show,
+};

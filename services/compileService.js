@@ -44,7 +44,11 @@ export function generateFiles(resourceName, components, projectPath) {
 
       const templateContent = readFileSync(templatePath, "utf-8");
       const template = handlebars.compile(templateContent);
-      const inputData = { resourceName: resourceNamePascalCase, components };
+      const inputData = {
+        resourceName: resourceNamePascalCase,
+        resourceNameCamelCase: resourceName,
+        components,
+      };
       const outputContent = template(inputData);
       const importFixedContent = fixImports(outputContent);
 
