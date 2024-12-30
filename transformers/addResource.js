@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 
 export function addResource(filePath, resourceName, importPath) {
   const source = fs.readFileSync(filePath, "utf-8");
-  const j = jscodeshift;
+  const j = jscodeshift.withParser("tsx");
   const root = j(source);
 
   const importExists = root
