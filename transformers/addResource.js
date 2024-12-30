@@ -1,4 +1,3 @@
-import { pascalCase } from "change-case";
 import fs from "fs";
 import Handlebars from "handlebars";
 import jscodeshift from "jscodeshift";
@@ -8,7 +7,8 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export function addResource(filePath, resourceName, importPath) {
+export function addResource(filePath, resourceName) {
+  const importPath = `@resources`;
   const source = fs.readFileSync(filePath, "utf-8");
   const j = jscodeshift.withParser("tsx");
   const root = j(source);
@@ -21,23 +21,41 @@ export function addResource(filePath, resourceName, importPath) {
 
   if (!importExists) {
     const importDeclaration = j.importDeclaration(
-      [
-        j.importSpecifier(j.identifier(`${pascalCase(resourceName)}List`)),
-        j.importSpecifier(j.identifier(`${pascalCase(resourceName)}Create`)),
-        j.importSpecifier(j.identifier(`${pascalCase(resourceName)}Edit`)),
-        j.importSpecifier(j.identifier(`${pascalCase(resourceName)}Show`)),
-      ],
+      [j.importSpecifier(j.identifier(`${resourceName}Resource`))],
       j.literal(importPath)
     );
 
     root.find(j.ImportDeclaration).at(0).insertBefore(importDeclaration);
+  } else {
+    root
+      .find(j.ImportDeclaration, {
+        source: { value: importPath },
+      })
+      .forEach((path) => {
+        const hasResource = path.value.specifiers.some(
+          (spec) => spec.local && spec.local.name === `${resourceName}Resource`
+        );
+
+        if (!hasResource) {
+          const specifier = j.importSpecifier(
+            j.identifier(`${resourceName}Resource`)
+          );
+          path.value.specifiers.push(specifier);
+        }
+      });
   }
   const resourceExists = root
     .find(j.JSXElement, {
       openingElement: {
         name: { name: "Resource" },
         attributes: [
-          { name: { name: "name" }, value: { value: `${resourceName}s` } },
+          {
+            type: "JSXSpreadAttribute",
+            argument: {
+              type: "Identifier",
+              name: `${resourceName}Resource`,
+            },
+          },
         ],
       },
     })
@@ -57,18 +75,29 @@ export function addResource(filePath, resourceName, importPath) {
       Handlebars.registerHelper("openBrace", function () {
         return "{";
       });
+      Handlebars.registerHelper("closeBrace", function () {
+        return "}";
+      });
       const resourceTemplate = Handlebars.compile(templateContent);
 
       const resourceCode = resourceTemplate({
-        resourceName: `${resourceName.toLowerCase()}s`,
-        componentName: pascalCase(resourceName),
+        resourceName: resourceName,
       });
+
       const resourceElement = j(resourceCode).nodes();
 
+      const lastResource = root.find(j.JSXElement, {
+        openingElement: { name: { name: "Resource" } },
+      });
+
       adminNode.forEach((path) => {
-        const children = path.value.children || [];
-        children.push(...resourceElement);
-        path.value.children = children;
+        if (lastResource.size() > 0) {
+          lastResource.at(-1).insertAfter(resourceElement);
+        } else {
+          const children = path.value.children || [];
+          children.push(...resourceElement);
+          path.value.children = children;
+        }
       });
     }
   }
