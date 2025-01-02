@@ -1,7 +1,8 @@
 import { CreateProps } from 'react-admin'
+import { ResourceToolbar } from '@components/ResourceToolbar';
 
 const {{resourceName}}Create: React.FC<CreateProps>  = (props) => (
-  <Create {...props}>
+  <Create actions={<ResourceToolbar backButton />} {...props}>
     <SimpleForm>
     {{#each components.createView}}
       {{{this}}}

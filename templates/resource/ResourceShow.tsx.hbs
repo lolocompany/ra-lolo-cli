@@ -1,7 +1,8 @@
 import { ShowProps } from 'react-admin'
+import { ResourceToolbar } from '@components/ResourceToolbar';
 
 const {{resourceName}}Show: React.FC<ShowProps>  = (props) => (
-<Show {...props}>
+<Show actions={<ResourceToolbar backButton editButton />} {...props}>
   <SimpleShowLayout>
     {{#each components.showView}}
       {{{this}}}

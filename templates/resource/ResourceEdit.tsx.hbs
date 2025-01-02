@@ -1,7 +1,8 @@
 import { EditProps } from 'react-admin'
+import { ResourceToolbar } from '@components/ResourceToolbar';
 
 const {{resourceName}}Edit: React.FC<EditProps>  = (props) => (
-  <Edit {...props}>
+  <Edit actions={<ResourceToolbar backButton showButton />} {...props}>
     <SimpleForm>
     {{#each components.editView}}
       {{{this}}}
