@@ -15,22 +15,22 @@ const __dirname = path.dirname(__filename);
 const IMPORT_PATH = "@resources";
 const TEMPLATE_PATH = "../templates/resourceComponent.jsx.hbs";
 
-export function addResource(filePath, resourceName) {
+export function addResource(filePath, resource) {
   const source = fs.readFileSync(filePath, "utf-8");
   const j = jscodeshift.withParser("tsx");
   const root = j(source);
 
-  handleResourceImport(j, root, resourceName, IMPORT_PATH);
+  handleResourceImport(j, root, resource.camelCase, IMPORT_PATH);
 
-  if (!hasResourceComponent(j, root, resourceName)) {
+  if (!hasResourceComponent(j, root, resource.pascalCase)) {
     const templateContent = fs.readFileSync(
       path.resolve(__dirname, TEMPLATE_PATH),
       "utf-8"
     );
-    addResourceComponent(j, root, resourceName, TEMPLATE_PATH, templateContent);
+    addResourceComponent(j, root, resource.camelCase, TEMPLATE_PATH, templateContent);
   }
 
-  updateResourceIndex(resourceName);
+  updateResourceIndex(resource);
 
   const newCode = root.toSource();
   fs.writeFileSync(filePath, newCode, "utf-8");

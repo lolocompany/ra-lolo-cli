@@ -19,6 +19,7 @@
         "handlebars": "^4.7.8",
         "inquirer": "^12.1.0",
         "jscodeshift": "^17.1.1",
+        "pluralize": "^8.0.0",
         "react-admin": "^5.3.4"
     }
 }

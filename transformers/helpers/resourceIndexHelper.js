@@ -1,8 +1,8 @@
 import fs from "fs";
 import path from "path";
 
-export function updateResourceIndex(resourceName) {
-  const projectRoot = process.env.PROJECT_PATH || './'
+export function updateResourceIndex(resource) {
+  const projectRoot = process.env.PROJECT_PATH || './';
   const indexPath = path.join(projectRoot, "src", "resources", "index.ts");
   const resourcesDir = path.join(projectRoot, "src", "resources");
   
@@ -15,7 +15,7 @@ export function updateResourceIndex(resourceName) {
     content = fs.readFileSync(indexPath, "utf-8");
   }
 
-  const exportStatement = `export * from "./${resourceName.toLowerCase()}s";`;
+  const exportStatement = `export * from "./${resource.plural}";`;
   
   if (!content.includes(exportStatement)) {
     const newContent = content ? `${content}\n${exportStatement}` : exportStatement;

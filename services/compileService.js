@@ -7,19 +7,16 @@ import {
 } from "fs";
 import path, { basename, join } from "path";
 import { fileURLToPath } from "url";
-
-import { pascalCase } from "change-case";
 import handlebars from "handlebars";
 import { fixImports } from "../transformers/fixImport.js";
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export function generateFiles(resourceNameCamelCase, components, projectPath) {
-  const resourceNamePascalCase = pascalCase(resourceNameCamelCase);
-
+export function generateFiles(resource, components, projectPath) {
   const templateDir = path.resolve(__dirname, "../templates/resource");
   const outputDir = projectPath;
-  const resourceDir = join(outputDir, `${resourceNameCamelCase}s`);
+  const resourceDir = join(outputDir, resource.plural);
 
   try {
     if (!existsSync(resourceDir)) {
@@ -33,7 +30,7 @@ export function generateFiles(resourceNameCamelCase, components, projectPath) {
       const templatePath = join(templateDir, file);
       const baseFileName = basename(file, ".hbs");
       const newFileName = baseFileName.includes("Resource")
-        ? baseFileName.replace("Resource", resourceNamePascalCase)
+        ? baseFileName.replace("Resource", resource.pascalCase)
         : baseFileName;
       const outputPath = join(resourceDir, newFileName);
 
@@ -45,8 +42,8 @@ export function generateFiles(resourceNameCamelCase, components, projectPath) {
       const templateContent = readFileSync(templatePath, "utf-8");
       const template = handlebars.compile(templateContent);
       const inputData = {
-        resourceName: resourceNamePascalCase,
-        resourceNameCamelCase: resourceNameCamelCase,
+        resourceName: resource.pascalCase,
+        resourceNameCamelCase: resource.camelCase,
         components,
       };
       const outputContent = template(inputData);
