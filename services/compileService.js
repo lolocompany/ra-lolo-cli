@@ -14,12 +14,12 @@ import { fixImports } from "../transformers/fixImport.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export function generateFiles(resourceName, components, projectPath) {
-  const resourceNamePascalCase = pascalCase(resourceName);
+export function generateFiles(resourceNameCamelCase, components, projectPath) {
+  const resourceNamePascalCase = pascalCase(resourceNameCamelCase);
 
   const templateDir = path.resolve(__dirname, "../templates/resource");
   const outputDir = projectPath;
-  const resourceDir = join(outputDir, `${resourceName}s`);
+  const resourceDir = join(outputDir, `${resourceNameCamelCase}s`);
 
   try {
     if (!existsSync(resourceDir)) {
@@ -46,7 +46,7 @@ export function generateFiles(resourceName, components, projectPath) {
       const template = handlebars.compile(templateContent);
       const inputData = {
         resourceName: resourceNamePascalCase,
-        resourceNameCamelCase: resourceName,
+        resourceNameCamelCase: resourceNameCamelCase,
         components,
       };
       const outputContent = template(inputData);
