@@ -13,7 +13,7 @@ export const generate = async () => {
     const projectPath = process.env.PROJECT_PATH || ".";
 
     for (const resource of resources) {
-      const schema = await getSchema(resource.camelCase);
+      const schema = await getSchema(resource.kebabCase);
       const views = createViewComponents(schema);
 
       saveGeneratedResource(resource, views, projectPath);
